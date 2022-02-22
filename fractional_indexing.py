@@ -1,7 +1,9 @@
 """
 Provides functions for generating ordering strings
 
-It’s a Python port of <https://github.com/rocicorp/fractional-indexing>.
+<https://observablehq.com/@dgreensp/implementing-fractional-indexing>
+
+<https://github.com/httpie/fractional-indexing-python>.
 
 """
 from math import floor
@@ -9,7 +11,7 @@ from typing import Optional, List
 import decimal
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __licence__ = 'CC0 1.0 Universal'
 
 

@@ -14,11 +14,16 @@ setup(
     long_description_content_type='text/markdown',
     version=__version__,
     license=__licence__,
-    url='https://github.com/httpie/fractional-indexing',
+    url='https://github.com/httpie/fractional-indexing-python',
     py_modules=[
         'fractional_indexing',
     ],
     install_requires=[
         'setuptools',
     ],
+    project_urls={
+        'GitHub': 'https://github.com/httpie/fractional-indexing-python',
+        'Twitter': 'https://twitter.com/httpie',
+        'Discord': 'https://httpie.io/discord',
+    },
 )
