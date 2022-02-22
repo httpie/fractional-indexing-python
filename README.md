@@ -16,6 +16,13 @@ This implementation includes variable-length integers, and the prepend/append op
 This should be byte-for-byte compatible with [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing) (JavaScript) and [rocicorp/fracdex](https://github.com/rocicorp/fracdex) (Go).
 
 
+## Installation
+
+```bash
+$ pip install fractional-indexing
+```
+
+
 ## Usage
 
 ```python
