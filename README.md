@@ -13,7 +13,7 @@ Fractional indexing is a technique to create an ordering that can be used for [R
 
 This implementation includes variable-length integers, and the prepend/append optimization described in David's article.
 
-This should be byte-for-byte compatible with [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing) and [rocicorp/fracdex](https://github.com/rocicorp/fracdex).
+This should be byte-for-byte compatible with [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing) (JavaScript) and [rocicorp/fracdex](https://github.com/rocicorp/fracdex) (Go).
 
 
 ## Usage
