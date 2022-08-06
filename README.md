@@ -45,7 +45,7 @@ assert second_and_half == 'a1V'
 
 ## Other Languages
 
-This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp). That means that this implementatino it’s byte-for-byte compatible with:
+This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp). That means that this implementation is byte-for-byte compatible with:
 
 | Language   | Repo                                                 |
 | ---------- | ---------------------------------------------------- |
