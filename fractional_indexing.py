@@ -11,7 +11,7 @@ from typing import Optional, List
 import decimal
 
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 __licence__ = 'CC0 1.0 Universal'
 
 BASE_62_DIGITS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'

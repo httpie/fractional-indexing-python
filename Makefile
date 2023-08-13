@@ -5,7 +5,8 @@ install:
 test:
 	poetry run pytest tests.py --verbose
 
-release:
+clean:
 	rm -rf build dist
-	python setup.py sdist bdist_wheel
-	twine upload --repository=fractional-indexing dist/*
+release: clean
+	poetry run python setup.py sdist bdist_wheel
+	poetry run twine upload --repository=fractional-indexing dist/*
