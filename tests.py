@@ -2,7 +2,10 @@ from typing import Optional
 
 import pytest
 
-from fractional_indexing import FIError, generate_key_between, generate_n_keys_between
+from fractional_indexing import FIError, generate_key_between, generate_n_keys_between, validate_order_key
+
+
+BASE_95_DIGITS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 
 
 @pytest.mark.parametrize(['a', 'b', 'expected'], [
@@ -79,11 +82,10 @@ def test_generate_n_keys_between(a: Optional[str], b: Optional[str], n: int, exp
     (None, 'A                          ', FIError('invalid order key: A                          ')),
 ])
 def test_base95_digits(a: Optional[str], b: Optional[str], expected: str) -> None:
-    base_95_digits = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
     kwargs = {
         'a': a,
         'b': b,
-        'digits': base_95_digits,
+        'digits': BASE_95_DIGITS,
     }
     if isinstance(expected, FIError):
         with pytest.raises(FIError) as e:
@@ -98,7 +100,8 @@ def test_base95_digits(a: Optional[str], b: Optional[str], expected: str) -> Non
         assert act == expected
 
 
-def test_readme_example():
+def test_readme_examples_single_key():
+    # Insert at the beginning
     first = generate_key_between(None, None)
     assert first == 'a0'
 
@@ -117,3 +120,40 @@ def test_readme_example():
     # Insert in between 2nd and 3rd. Midpoint
     second_and_half = generate_key_between(second, third)
     assert second_and_half == 'a1V'
+
+
+def test_readme_examples_multiple_keys():
+    # Insert 3 at the beginning
+    keys = generate_n_keys_between(None, None, n=3)
+    assert keys == ['a0', 'a1', 'a2']
+
+    # Insert 3 after 1st
+    keys = generate_n_keys_between('a0', None, n=3)
+    assert keys == ['a1', 'a2', 'a3']
+
+    # Insert 3 before 1st
+    keys = generate_n_keys_between(None, 'a0', n=3)
+    assert keys == ['Zx', 'Zy', 'Zz']
+
+    # Insert 3 in between 2nd and 3rd. Midpoint
+    keys = generate_n_keys_between('a1', 'a2', n=3)
+    assert keys == ['a1G', 'a1V', 'a1l']
+
+
+def test_readme_examples_validate_order_key():
+    from fractional_indexing import validate_order_key, FIError
+
+    validate_order_key('a0')
+
+    try:
+        validate_order_key('foo')
+    except FIError as e:
+        print(e)  # fractional_indexing.FIError: invalid order key: foo
+
+
+def test_readme_examples_custom_base():
+    validate_order_key('a ', digits=BASE_95_DIGITS)
+    assert generate_key_between(None, None, digits=BASE_95_DIGITS) == 'a '
+    assert generate_key_between('a ', None, digits=BASE_95_DIGITS) == 'a!'
+    assert generate_key_between(None, 'a ', digits=BASE_95_DIGITS) == 'Z~'
+    assert generate_n_keys_between('a ', 'a!', n=3, digits=BASE_95_DIGITS) == ['a 8', 'a P', 'a h']
