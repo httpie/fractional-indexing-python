@@ -14,10 +14,7 @@ import decimal
 __version__ = '0.1.1'
 __licence__ = 'CC0 1.0 Universal'
 
-
 BASE_62_DIGITS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-SMALLEST_INTEGER = 'A00000000000000000000000000'
-INTEGER_ZERO = 'a0'
 
 
 class FIError(Exception):
@@ -33,16 +30,17 @@ def midpoint(a: str, b: Optional[str], digits: str) -> str:
     ascending character code order!
 
     """
+    zero = digits[0]
     if b is not None and a >= b:
         raise FIError(f'{a} >= {b}')
-    if (a and a[-1]) == '0' or (b is not None and b[-1] == '0'):
+    if (a and a[-1]) == zero or (b is not None and b[-1] == zero):
         raise FIError('trailing zero')
     if b:
         # remove longest common prefix.  pad `a` with 0s as we
         # go.  note that we don't need to pad `b`, because it can't
         # end before `a` while traversing the common prefix.
         n = 0
-        for x, y in zip(a.ljust(len(b), '0'), b):
+        for x, y in zip(a.ljust(len(b), zero), b):
             if x == y:
                 n += 1
                 continue
@@ -97,8 +95,10 @@ def get_integer_part(key: str) -> str:
     return key[:integer_part_length]
 
 
-def validate_order_key(key: str):
-    if key == SMALLEST_INTEGER:
+def validate_order_key(key: str, digits=BASE_62_DIGITS):
+    zero = digits[0]
+    smallest = 'A' + (zero * 26)
+    if key == smallest:
         raise FIError(f'invalid order key: {key}')
 
     # get_integer_part() will throw if the first character is bad,
@@ -106,30 +106,31 @@ def validate_order_key(key: str):
     # even if we didn't need the result
     i = get_integer_part(key)
     f = key[len(i):]
-    if f and f[-1] == '0':
+    if f and f[-1] == zero:
         raise FIError(f'invalid order key: {key}')
 
 
 def increment_integer(x: str, digits: str) -> Optional[str]:
+    zero = digits[0]
     validate_integer(x)
     head, *digs = x
     carry = True
     for i in reversed(range(len(digs))):
         d = digits.index(digs[i]) + 1
         if d == len(digits):
-            digs[i] = '0'
+            digs[i] = zero
         else:
             digs[i] = digits[d]
             carry = False
             break
     if carry:
         if head == 'Z':
-            return 'a0'
+            return 'a' + zero
         elif head == 'z':
             return None
         h = chr(ord(head[0]) + 1)
         if h > 'a':
-            digs.append('0')
+            digs.append(zero)
         else:
             digs.pop()
         return h + ''.join(digs)
@@ -179,19 +180,20 @@ def generate_key_between(a: Optional[str], b: Optional[str], digits=BASE_62_DIGI
     ascending character code order!
 
     """
+    zero = digits[0]
     if a is not None:
-        validate_order_key(a)
+        validate_order_key(a, digits=digits)
     if b is not None:
-        validate_order_key(b)
+        validate_order_key(b, digits=digits)
     if a is not None and b is not None and a >= b:
         raise FIError(f'{a} >= {b}')
 
     if a is None:
         if b is None:
-            return INTEGER_ZERO
+            return 'a' + zero
         ib = get_integer_part(b)
         fb = b[len(ib):]
-        if ib == SMALLEST_INTEGER:
+        if ib == 'A' + (zero * 26):
             return ib + midpoint('', fb, digits)
         if ib < b:
             return ib

@@ -39,13 +39,12 @@ def test_generate_key_between(a: Optional[str], b: Optional[str], expected: str)
         with pytest.raises(FIError) as e:
             generate_key_between(a, b)
         assert e.value.args[0] == expected.args[0]
-        return
     else:
         act = generate_key_between(a, b)
-    print(f'exp: {expected}')
-    print(f'act: {act}')
-    print(act == expected)
-    assert act == expected
+        print(f'exp: {expected}')
+        print(f'act: {act}')
+        print(act == expected)
+        assert act == expected
 
 
 @pytest.mark.parametrize(['a', 'b', 'n', 'expected'], [
@@ -62,6 +61,41 @@ def test_generate_n_keys_between(a: Optional[str], b: Optional[str], n: int, exp
     print(f'act: {act}')
     print(act == expected)
     assert act == expected
+
+
+@pytest.mark.parametrize(['a', 'b', 'expected'], [
+    ('a00', 'a01', 'a00P'),
+    ('a0/', 'a00', 'a0/P'),
+    (None, None, 'a '),
+    ('a ', None, 'a!'),
+    (None, 'a ', 'Z~'),
+    ('a0 ', 'a0!', FIError('invalid order key: a0 ')),
+    (None, 'A                          0', 'A                          ('),
+    ('a~', None, 'b  '),
+    ('Z~', None, 'a '),
+    ('b   ', None, FIError('invalid order key: b   ')),
+    ('a0', 'a0V', 'a0;'),
+    ('a  1', 'a  2', 'a  1P'),
+    (None, 'A                          ', FIError('invalid order key: A                          ')),
+])
+def test_base95_digits(a: Optional[str], b: Optional[str], expected: str) -> None:
+    base_95_digits = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+    kwargs = {
+        'a': a,
+        'b': b,
+        'digits': base_95_digits,
+    }
+    if isinstance(expected, FIError):
+        with pytest.raises(FIError) as e:
+            generate_key_between(**kwargs)
+        assert e.value.args[0] == expected.args[0]
+    else:
+        act = generate_key_between(**kwargs)
+        print()
+        print(f'exp: {expected}')
+        print(f'act: {act}')
+        print(act == expected)
+        assert act == expected
 
 
 def test_readme_example():
