@@ -1,11 +1,11 @@
 # Fractional Indexing
 
-
 This is based on [Implementing Fractional Indexing
 ](https://observablehq.com/@dgreensp/implementing-fractional-indexing) by [David Greenspan
 ](https://github.com/dgreensp).
 
-Fractional indexing is a technique to create an ordering that can be used for [Realtime Editing of Ordered Sequences](https://www.figma.com/blog/realtime-editing-of-ordered-sequences/).
+Fractional indexing is a technique to create an ordering that can be used
+for [Realtime Editing of Ordered Sequences](https://www.figma.com/blog/realtime-editing-of-ordered-sequences/).
 
 This implementation includes variable-length integers, and the prepend/append optimization described in David's article.
 
@@ -14,7 +14,6 @@ This implementation includes variable-length integers, and the prepend/append op
 ```bash
 $ pip install fractional-indexing
 ```
-
 
 ## Usage
 
@@ -70,11 +69,11 @@ assert keys == ['a1G', 'a1V', 'a1l']
 
 ```
 
-
 ### Validate a key
 
 ```python
 from fractional_indexing import validate_order_key, FIError
+
 
 validate_order_key('a0')
 
@@ -87,7 +86,7 @@ except FIError as e:
 
 ### Use custom base digits
 
-By default, this library uses Base62 character encoding. To use a different set of digits, pass them in as the `digits` 
+By default, this library uses Base62 character encoding. To use a different set of digits, pass them in as the `digits`
 argument to `generate_key_between()`, `generate_n_keys_between()`, and `validate_order_key()`:
 
 ```python
@@ -95,7 +94,6 @@ from fractional_indexing import generate_key_between, generate_n_keys_between, v
 
 
 BASE_95_DIGITS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
-
 
 assert generate_key_between(None, None, digits=BASE_95_DIGITS) == 'a '
 assert generate_key_between('a ', None, digits=BASE_95_DIGITS) == 'a!'
@@ -107,12 +105,13 @@ validate_order_key('a ', digits=BASE_95_DIGITS)
 
 ```
 
-
 ## Other Languages
 
-This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp). That means that this implementation is byte-for-byte compatible with:
+This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp). That means
+that this implementation is byte-for-byte compatible with:
 
-| Language   | Repo                                                 |
-| ---------- | ---------------------------------------------------- |
-| JavaScript | https://github.com/rocicorp/fractional-indexing      |
-| Go         | https://github.com/rocicorp/fracdex                  |
+| Language   | Repo                                                  |
+|------------|-------------------------------------------------------|
+| JavaScript | https://github.com/rocicorp/fractional-indexing       |
+| Go         | https://github.com/rocicorp/fracdex                   |
+| Kotlin     | https://github.com/darvelo/fractional-indexing-kotlin |
