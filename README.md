@@ -40,7 +40,7 @@ assert third == 'a2'
 zeroth = generate_key_between(None, first)
 assert zeroth == 'Zz'
 
-# Insert in between 2nd and 3rd. Midpoint
+# Insert in between 2nd and 3rd — midpoint
 second_and_half = generate_key_between(second, third)
 assert second_and_half == 'a1V'
 
@@ -64,7 +64,7 @@ assert keys == ['a1', 'a2', 'a3']
 keys = generate_n_keys_between(None, 'a0', n=3)
 assert keys == ['Zx', 'Zy', 'Zz']
 
-# Insert 3 in between 2nd and 3rd. Midpoint
+# Insert 3 in between 2nd and 3rd — midpoint
 keys = generate_n_keys_between('a1', 'a2', n=3)
 assert keys == ['a1G', 'a1V', 'a1l']
 
