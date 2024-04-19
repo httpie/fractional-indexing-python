@@ -117,3 +117,4 @@ that this implementation is byte-for-byte compatible with:
 | JavaScript | https://github.com/rocicorp/fractional-indexing       |
 | Go         | https://github.com/rocicorp/fracdex                   |
 | Kotlin     | https://github.com/darvelo/fractional-indexing-kotlin |
+| Ruby       | https://github.com/kazu-2020/fractional_indexer       |
