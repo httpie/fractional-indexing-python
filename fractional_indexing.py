@@ -410,7 +410,7 @@ def generate_n_keys_between(
 ) -> List[str]:
     """
     same preconditions as generate_key_between().
-    n >= 0.
+    n must be >= 0 (raises FIError otherwise).
     Returns an array of n distinct keys in sorted order.
     If a and b are both null, returns [a0, a1, ...]
     If one or the other is null, returns consecutive "integer"
@@ -418,6 +418,10 @@ def generate_n_keys_between(
 
     """
     digits, int_digits = _resolve_alphabets(digits, int_digits)
+    if n < 0:
+        # Without this guard a negative n silently returns a single key when
+        # one bound is None, and recurses without bound when both are set.
+        raise FIError(f'n must be >= 0: {n}')
     if n == 0:
         return []
     if n == 1:

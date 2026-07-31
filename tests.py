@@ -247,6 +247,20 @@ def test_equal_bounds_rejected() -> None:
         generate_key_between('a0', 'a0')
 
 
+# A negative n must raise, not silently return a single key (one bound None)
+# or recurse without bound (both bounds set).
+@pytest.mark.parametrize(['a', 'b'], [
+    (None, None),
+    ('a0', None),
+    (None, 'a1'),
+    ('a0', 'a5'),
+])
+def test_negative_n_rejected(a: Optional[str], b: Optional[str]) -> None:
+    with pytest.raises(FIError) as e:
+        generate_n_keys_between(a, b, -1)
+    assert e.value.args[0] == 'n must be >= 0: -1'
+
+
 def test_readme_examples_single_key():
     # Insert at the beginning
     first = generate_key_between(None, None)
