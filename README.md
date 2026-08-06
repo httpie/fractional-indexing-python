@@ -1,14 +1,15 @@
 # Fractional Indexing
 
-> This library is based on [Implementing Fractional Indexing
+This is based on [Implementing Fractional Indexing
 ](https://observablehq.com/@dgreensp/implementing-fractional-indexing) by [David Greenspan](https://github.com/dgreensp).
-> Fractional indexing is a technique to create an ordering that can be used
+Fractional indexing is a technique to create an ordering that can be used
 for [Realtime Editing of Ordered Sequences](https://www.figma.com/blog/realtime-editing-of-ordered-sequences/). 
 This implementation includes variable-length integers and the prepend/append optimization described in David's article.
 
 
-This is a Python port of the original JavaScript implementation from [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing).
-The current version is compatible with v4 of the original ([see changelog](#changelog)).
+> [!NOTE]
+> This is a Python port of the original JavaScript implementation from [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing).
+> The current version is compatible with v4 of the original (see [changelog](#changelog)).
 
 ## Installation
 
@@ -130,8 +131,10 @@ ascending character-code order; `int_digits` must also have even length. Invalid
 
 ## Other Languages
 
-This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp)
-(as of its v4.0.0). That means that this implementation is byte-for-byte compatible with:
+> [!IMPORTANT]
+> See [changelog](#changelog) for version compatibility.
+
+This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp). That means that this implementation is byte-for-byte compatible with:
 
 | Language   | Repo                                                                                        |
 |------------|---------------------------------------------------------------------------------------------|
