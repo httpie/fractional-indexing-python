@@ -1,11 +1,13 @@
 """
 Provides functions for generating ordering strings
 
-<https://github.com/httpie/fractional-indexing-python>.
+<https://github.com/httpie/fractional-indexing-python>
 
-Python port of <https://github.com/rocicorp/fractional-indexing> (v4.0.0),
-which is based on
-<https://observablehq.com/@dgreensp/implementing-fractional-indexing>.
+Python port of:
+<https://github.com/rocicorp/fractional-indexing> (v4.0.0)
+
+Which is based on:
+<https://observablehq.com/@dgreensp/implementing-fractional-indexing>
 
 
 """
@@ -16,7 +18,7 @@ from math import floor
 from typing import List, Optional
 
 
-__version__ = '0.2.0'
+__version__ = '4.0.0'
 __licence__ = 'CC0 1.0 Universal'
 
 __all__ = [

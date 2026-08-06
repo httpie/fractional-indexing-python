@@ -1,13 +1,14 @@
 # Fractional Indexing
 
-This is based on [Implementing Fractional Indexing
-](https://observablehq.com/@dgreensp/implementing-fractional-indexing) by [David Greenspan
-](https://github.com/dgreensp).
+> This library is based on [Implementing Fractional Indexing
+](https://observablehq.com/@dgreensp/implementing-fractional-indexing) by [David Greenspan](https://github.com/dgreensp).
+> Fractional indexing is a technique to create an ordering that can be used
+for [Realtime Editing of Ordered Sequences](https://www.figma.com/blog/realtime-editing-of-ordered-sequences/). 
+This implementation includes variable-length integers and the prepend/append optimization described in David's article.
 
-Fractional indexing is a technique to create an ordering that can be used
-for [Realtime Editing of Ordered Sequences](https://www.figma.com/blog/realtime-editing-of-ordered-sequences/).
 
-This implementation includes variable-length integers, and the prepend/append optimization described in David's article.
+This is a Python port of the original JavaScript implementation from [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing).
+The current version is compatible with v4 of the original ([see changelog](#changelog)).
 
 ## Installation
 
@@ -91,7 +92,7 @@ except FIError as e:
 By default, this library uses Base62 character encoding. To use a different set of digits, pass them in as the `digits`
 argument to `generate_key_between()`, `generate_n_keys_between()`, and `validate_order_key()`.
 
-Every key starts with a "head" character that encodes the length of its integer part. Since v0.2.0 (matching the
+Every key starts with a "head" character that encodes the length of its integer part. Since v4.0.0 (matching the
 JS reference v4.0.0), the head alphabet (`int_digits`) defaults to `digits` itself, so a custom alphabet produces
 self-contained keys drawn only from that alphabet:
 
@@ -132,16 +133,18 @@ ascending character-code order; `int_digits` must also have even length. Invalid
 This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp)
 (as of its v4.0.0). That means that this implementation is byte-for-byte compatible with:
 
-| Language   | Repo                                                  |
-|------------|-------------------------------------------------------|
-| JavaScript | https://github.com/rocicorp/fractional-indexing       |
-| Go         | https://github.com/rocicorp/fracdex                   |
-| Kotlin     | https://github.com/darvelo/fractional-indexing-kotlin |
-| Ruby       | https://github.com/kazu-2020/fractional_indexer       |
+| Language   | Repo                                                                                        |
+|------------|---------------------------------------------------------------------------------------------|
+| JavaScript | [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing)             |
+| Go         | [rocicorp/fracdex](https://github.com/rocicorp/fracdex)                                     |
+| Kotlin     | [darvelo/fractional-indexing-kotlin](https://github.com/darvelo/fractional-indexing-kotlin) |
+| Ruby       | [kazu-2020/fractional_indexer](https://github.com/kazu-2020/fractional_indexer)             |
 
 ## Changelog
 
-### 0.2.0
+Starting with v4, we mirror the major version number of the original JS implementation to indicate compatibility.
+
+### 4.0.0 (2026-08-06)
 
 Brings the library to parity with [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing)
 v4.0.0:
@@ -157,3 +160,11 @@ v4.0.0:
   digits now raise `FIError` consistently instead of leaking `ValueError`.
 - Digit lookups are cached per alphabet, and the midpoint calculation uses integer arithmetic (the `decimal`
   dependency is gone).
+
+### 0.1.2 (2023-08-03)
+
+Bug fixes.
+
+### 0.1.0 (2022-02-02)
+
+Initial release.
