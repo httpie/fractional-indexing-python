@@ -145,7 +145,8 @@ This is a Python port of the original JavaScript implementation by [@rocicorp](h
 
 ## Changelog
 
-Starting with v4, we mirror the major version number of the original JS implementation to indicate compatibility.
+> [!NOTE]
+> Starting with v4, we mirror the major version number of the original JS implementation to indicate compatibility.
 
 ### 4.0.0 (2026-08-06)
 
