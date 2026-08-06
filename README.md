@@ -89,28 +89,48 @@ except FIError as e:
 ### Use custom base digits
 
 By default, this library uses Base62 character encoding. To use a different set of digits, pass them in as the `digits`
-argument to `generate_key_between()`, `generate_n_keys_between()`, and `validate_order_key()`:
+argument to `generate_key_between()`, `generate_n_keys_between()`, and `validate_order_key()`.
+
+Every key starts with a "head" character that encodes the length of its integer part. Since v0.2.0 (matching the
+JS reference v4.0.0), the head alphabet (`int_digits`) defaults to `digits` itself, so a custom alphabet produces
+self-contained keys drawn only from that alphabet:
 
 ```python
-from fractional_indexing import generate_key_between, generate_n_keys_between, validate_order_key
+from fractional_indexing import generate_key_between
+
+
+assert generate_key_between(None, None, digits='0123456789') == '50'
+assert generate_key_between('50', None, digits='0123456789') == '51'
+
+```
+
+To keep the pre-0.2 behaviour (`A-Z`/`a-z` head markers, e.g. `a0`), pass `BASE_52_DIGITS` as `int_digits`.
+An odd-length alphabet such as Base95 cannot supply its own (even-length) head alphabet, so it must be paired
+with an explicit `int_digits`:
+
+```python
+from fractional_indexing import BASE_52_DIGITS, generate_key_between, generate_n_keys_between, validate_order_key
 
 
 BASE_95_DIGITS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 
-assert generate_key_between(None, None, digits=BASE_95_DIGITS) == 'a '
-assert generate_key_between('a ', None, digits=BASE_95_DIGITS) == 'a!'
-assert generate_key_between(None, 'a ', digits=BASE_95_DIGITS) == 'Z~'
+assert generate_key_between(None, None, digits=BASE_95_DIGITS, int_digits=BASE_52_DIGITS) == 'a '
+assert generate_key_between('a ', None, digits=BASE_95_DIGITS, int_digits=BASE_52_DIGITS) == 'a!'
+assert generate_key_between(None, 'a ', digits=BASE_95_DIGITS, int_digits=BASE_52_DIGITS) == 'Z~'
 
-assert generate_n_keys_between('a ', 'a!', n=3, digits=BASE_95_DIGITS) == ['a"', 'a#', 'a$']
+assert generate_n_keys_between('a ', 'a!', n=3, digits=BASE_95_DIGITS, int_digits=BASE_52_DIGITS) == ['a 8', 'a P', 'a h']
 
-validate_order_key('a ', digits=BASE_95_DIGITS)
+validate_order_key('a ', digits=BASE_95_DIGITS, int_digits=BASE_52_DIGITS)
 
 ```
 
+Alphabets are validated: they must be at least two characters, single-byte (char code 0-255), and in strictly
+ascending character-code order; `int_digits` must also have even length. Invalid alphabets raise `FIError`.
+
 ## Other Languages
 
-This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp). That means
-that this implementation is byte-for-byte compatible with:
+This is a Python port of the original JavaScript implementation by [@rocicorp](https://github.com/rocicorp)
+(as of its v4.0.0). That means that this implementation is byte-for-byte compatible with:
 
 | Language   | Repo                                                  |
 |------------|-------------------------------------------------------|
@@ -118,3 +138,22 @@ that this implementation is byte-for-byte compatible with:
 | Go         | https://github.com/rocicorp/fracdex                   |
 | Kotlin     | https://github.com/darvelo/fractional-indexing-kotlin |
 | Ruby       | https://github.com/kazu-2020/fractional_indexer       |
+
+## Changelog
+
+### 0.2.0
+
+Brings the library to parity with [rocicorp/fractional-indexing](https://github.com/rocicorp/fractional-indexing)
+v4.0.0:
+
+- **Breaking**: the head alphabet now defaults to `digits` itself, so custom alphabets produce self-contained keys
+  (e.g. `generate_key_between(None, None, digits='0123456789')` returns `'50'`, not `'a0'`). Pass
+  `int_digits=BASE_52_DIGITS` to restore the previous `A-Z`/`a-z` head markers. Keys generated with the default
+  Base62 alphabet are unchanged.
+- New `int_digits` argument on `generate_key_between()`, `generate_n_keys_between()`, and `validate_order_key()`
+  to customise the head alphabet, plus a new `BASE_52_DIGITS` export.
+- `generate_key_between()` now accepts its bounds in either order and swaps them, instead of raising `FIError`.
+- Alphabets are validated (length, ascending character-code order, single-byte); invalid alphabets and unknown
+  digits now raise `FIError` consistently instead of leaking `ValueError`.
+- Digit lookups are cached per alphabet, and the midpoint calculation uses integer arithmetic (the `decimal`
+  dependency is gone).
